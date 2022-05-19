@@ -15,33 +15,46 @@
 --
 -- Enable lush.ify on this file, run: :Lushify
 
---                      black             #282828
--- fg0        #e2cca9   bg0               #32302f
--- fg1        #f0dec2   bg1               #3c3836
---                      bg2               #3c3836
--- grey0      #7c6f64   bg3               #504945
--- grey1      #928374   bg4               #504945
--- grey2      #a89984   bg5               #665c54
--- grey3      #b0a392   bg_current_word   #45403d
--- aqua       #8bba7f   bg_diff_blue      #0f3a42
--- blue       #80aa9e   bg_diff_green     #3d4220
--- green      #b0b846   bg_diff_red       #472322
--- orange     #f28534
--- purple     #d3869b   bg_statusline1    #3c3836
--- red        #f2594b   bg_statusline2    #46413e
--- yellow     #e9b143   bg_statusline3    #5b534d
---                      bg_visual_blue    #404946
--- bg_yellow  #e9b143   bg_visual_green   #424a3e
--- bg_green   #b0b846   bg_visual_red     #543937
--- bg_red     #db4740   bg_visual_yellow  #574833
-
-
 local lush = require('lush')
 local hsl = lush.hsl
 local hsluv = lush.hsluv
 
+local gb = { -- {{{
+   bg0       = hsluv(61, 33, 83),
+   bg1       = hsluv(61, 47, 89),
+   grey0     = hsluv(49, 21, 48),
+   grey1     = hsluv(52, 23, 56),
+   grey2     = hsluv(59, 26, 64),
+   grey3     = hsluv(58, 21, 68),
+   fg0       = hsluv(37, 49, 33),
+   fg1       = hsluv(39, 49, 26),
+   fg2       = hsluv(40, 8, 24),
+   red0      = hsluv(15, 83, 59),
+   red       = hsluv(12, 75, 50),
+   red1      = hsluv(12, 100, 32),
+   aqua0     = hsluv(122, 45, 71),
+   aqua      = hsluv(141, 63, 47),
+   blue0     = hsluv(167, 39, 66),
+   blue1     = hsluv(212, 60, 45),
+   blue2     = hsluv(217, 98, 39),
+   green0    = hsluv(90, 84, 72),
+   green1    = hsluv(82, 97, 48),
+   green2    = hsluv(96, 81, 48),
+   orange0   = hsluv(32, 89, 66),
+   orange    = hsluv(29, 98, 51),
+   orange2   = hsluv(20, 99, 41),
+   purple0   = hsluv(355, 48, 64),
+   purple1   = hsluv(329, 34, 47),
+   purple    = hsluv(333, 58, 39),
+   yellow0   = hsluv(56, 87, 76),
+   yellow    = hsluv(43, 99, 54),
+   bg_red    = hsluv(12, 39, 48),
+   bg_yellow = hsluv(40, 85, 51),
+   bg_green  = hsluv(106, 54, 52),
+} -- }}}
+
 local bg0     = hsluv(75, 32, 96)  -- #f7f3e3
-local bg1     = hsluv(75, 17, 92)
+local bg1     = hsluv(75, 17, 90)
 
 local black   = hsluv(0, 0, 0)     -- #000000
 local blue    = hsluv(254, 94, 47) -- #1e6fcc
@@ -53,9 +66,11 @@ local grey2   = hsluv(77, 13, 76)  -- #bfbcaf
 local grey3   = hsluv(0, 0, 70)    -- #aaaaaa
 local grey4   = hsluv(0, 0, 50)    -- #777777
 local grey5   = hsluv(0, 0, 36)    -- #555555
-local yellow  = hsluv(59, 100, 60) -- #b58900
-local lyellow = hsluv(77, 57, 89)  -- #f2de91
+local yellow0 = hsluv(77, 57, 89)  -- #f2de91
+local yellow1 = hsluv(59, 100, 60) -- #b58900
+local yellow2 = hsluv(30, 100, 44)
 local orange  = hsluv(30, 100, 44) -- #a55000
+local orange2 = hsluv(46, 85, 75)
 local purple  = hsluv(277, 86, 30) -- #5c21a5
 local white   = hsluv(0, 0, 100)   -- #ffffff
 local cyan    = hsluv(185, 96, 53) -- #158c86
@@ -69,7 +84,7 @@ local theme = lush(function()
       Black  { fg = black },
       Red    { fg = red },
       Green  { fg = green },
-      Yellow { fg = yellow },
+      Yellow { fg = yellow1 },
       Orange { fg = orange },
       Aqua   { },
       Blue   { fg = blue },
@@ -126,12 +141,12 @@ local theme = lush(function()
       -- TermCursorNC { }, -- Cursor in an unfocused terminal
       ErrorMsg     { RedBold }, -- Error messages on the command line
       VertSplit    { fg = grey2 }, -- Column separating vertically split windows
-      Folded       { fg = blue }, -- Line used for closed folds
+      Folded       { fg = yellow2, bg = bg1.darken(2) }, -- Line used for closed folds
       FoldColumn   { fg = black, bg = grey1 }, -- 'foldcolumn'
       SignColumn   { FoldColumn }, -- Column where |signs| are displayed
-      IncSearch    { bg = lyellow }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
+      IncSearch    { bg = yellow0 }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
       -- Substitute   { }, -- |:substitute| replacement text highlighting
-      LineNr       { Black }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+      LineNr       { Grey }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
       CursorLineNr { Blue }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
       MatchParen   { gui = 'bold' }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
       -- ModeMsg      { }, -- 'showmode' message (e.g., "-- INSERT -- ")
@@ -148,7 +163,7 @@ local theme = lush(function()
       PmenuThumb   { PmenuSel }, -- Popup menu: Thumb of the scrollbar.
       Question     { Black }, -- |hit-enter| prompt and yes/no questions
       -- QuickFixLine { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-      Search       { bg = lyellow }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+      Search       { bg = yellow0 }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
       SpecialKey   { Blue }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
       SpellBad     { fg = red, gui = 'bold,undercurl' }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
       SpellCap     { fg = purple, gui = 'undercurl' }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
@@ -185,14 +200,14 @@ local theme = lush(function()
       -- Float          { }, --   A floating point constant: 2.3e10
 
       Identifier     { Black }, -- (*) Any variable name
-      Function       { BlackBold }, --   Function name (also: methods for classes)
+      Function       { fg = gbml.green }, --   Function name (also: methods for classes)
 
       Statement      { BlackBold }, -- (*) Any statement
       -- Conditional    { }, --   if, then, else, endif, switch, etc.
       -- Repeat         { }, --   for, do, while, etc.
       Label          { BlackBold }, --   case, default, etc.
       Operator       { Black }, --   "sizeof", "+", "*", etc.
-      Keyword        { BlackBold }, --   any other keyword
+      Keyword        { fg = gb.red }, --   any other keyword
       -- Exception      { }, --   try, catch, throw
 
       PreProc        { Yellow }, -- (*) Generic Preprocessor
@@ -263,72 +278,72 @@ local theme = lush(function()
       --
       -- See :h nvim-treesitter-highlights, some groups may not be listed, submit a PR fix to lush-template!
       --
-      -- TSAttribute          { } , -- Annotations that can be attached to the code to denote some kind of meta information. e.g. C++/Dart attributes.
-      -- TSBoolean            { } , -- Boolean literals: `True` and `False` in Python.
-      -- TSCharacter          { } , -- Character literals: `'a'` in C.
-      -- TSCharacterSpecial   { } , -- Special characters.
-      TSComment            { Comment } , -- Line comments and block comments.
-      -- TSConditional        { } , -- Keywords related to conditionals: `if`, `when`, `cond`, etc.
-      -- TSConstant           { } , -- Constants identifiers. These might not be semantically constant. E.g. uppercase variables in Python.
-      -- TSConstBuiltin       { } , -- Built-in constant values: `nil` in Lua.
-      -- TSConstMacro         { } , -- Constants defined by macros: `NULL` in C.
-      -- TSConstructor        { } , -- Constructor calls and definitions: `{}` in Lua, and Java constructors.
-      -- TSDebug              { } , -- Debugging statements.
-      -- TSDefine             { } , -- Preprocessor #define statements.
-      -- TSError              { } , -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
-      -- TSException          { } , -- Exception related keywords: `try`, `except`, `finally` in Python.
-      -- TSField              { } , -- Object and struct fields.
-      -- TSFloat              { } , -- Floating-point number literals.
-      -- TSFunction           { } , -- Function calls and definitions.
-      -- TSFuncBuiltin        { } , -- Built-in functions: `print` in Lua.
-      -- TSFuncMacro          { } , -- Macro defined functions (calls and definitions): each `macro_rules` in Rust.
-      -- TSInclude            { } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
-      -- TSKeyword            { } , -- Keywords that don't fit into other categories.
-      -- TSKeywordFunction    { } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
-      -- TSKeywordOperator    { } , -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
-      -- TSKeywordReturn      { } , -- Keywords like `return` and `yield`.
-      -- TSLabel              { } , -- GOTO labels: `label:` in C, and `::label::` in Lua.
-      -- TSMethod             { } , -- Method calls and definitions.
-      -- TSNamespace          { } , -- Identifiers referring to modules and namespaces.
-      -- TSNone               { } , -- No highlighting (sets all highlight arguments to `NONE`). this group is used to clear certain ranges, for example, string interpolations. Don't change the values of this highlight group.
-      -- TSNumber             { } , -- Numeric literals that don't fit into other categories.
-      -- TSOperator           { } , -- Binary or unary operators: `+`, and also `->` and `*` in C.
-      -- TSParameter          { } , -- Parameters of a function.
-      -- TSParameterReference { } , -- References to parameters of a function.
-      -- TSPreProc            { } , -- Preprocessor #if, #else, #endif, etc.
-      -- TSProperty           { } , -- Same as `TSField`.
-      -- TSPunctDelimiter     { } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
-      -- TSPunctBracket       { } , -- Brackets, braces, parentheses, etc.
-      -- TSPunctSpecial       { } , -- Special punctuation that doesn't fit into the previous categories.
-      -- TSRepeat             { } , -- Keywords related to loops: `for`, `while`, etc.
-      -- TSStorageClass       { } , -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
-      -- TSString             { } , -- String literals.
-      -- TSStringRegex        { } , -- Regular expression literals.
-      -- TSStringEscape       { } , -- Escape characters within a string: `\n`, `\t`, etc.
-      -- TSStringSpecial      { } , -- Strings with special meaning that don't fit into the previous categories.
-      -- TSSymbol             { } , -- Identifiers referring to symbols or atoms.
-      -- TSTag                { } , -- Tags like HTML tag names.
-      -- TSTagAttribute       { } , -- HTML tag attributes.
-      -- TSTagDelimiter       { } , -- Tag delimiters like `<` `>` `/`.
-      -- TSText               { } , -- Non-structured text. Like text in a markup language.
-      -- TSStrong             { } , -- Text to be represented in bold.
-      -- TSEmphasis           { } , -- Text to be represented with emphasis.
-      -- TSUnderline          { } , -- Text to be represented with an underline.
-      -- TSStrike             { } , -- Strikethrough text.
-      -- TSTitle              { } , -- Text that is part of a title.
-      -- TSLiteral            { } , -- Literal or verbatim text.
-      -- TSURI                { } , -- URIs like hyperlinks or email addresses.
-      -- TSMath               { } , -- Math environments like LaTeX's `$ ... $`
-      -- TSTextReference      { } , -- Footnotes, text references, citations, etc.
-      -- TSEnvironment        { } , -- Text environments of markup languages.
-      -- TSEnvironmentName    { } , -- Text/string indicating the type of text environment. Like the name of a `\begin` block in LaTeX.
-      -- TSNote               { } , -- Text representation of an informational note.
-      -- TSWarning            { } , -- Text representation of a warning note.
-      -- TSDanger             { } , -- Text representation of a danger note.
-      -- TSType               { } , -- Type (and class) definitions and annotations.
-      -- TSTypeBuiltin        { } , -- Built-in types: `i32` in Rust.
-      -- TSVariable           { } , -- Variable names that don't fit into other categories.
-      -- TSVariableBuiltin    { } , -- Variable names defined by the language: `this` or `self` in Javascript.
+      -- TSAttribute          { }, -- Annotations that can be attached to the code to denote some kind of meta information. e.g. C++/Dart attributes.
+      -- TSBoolean            { }, -- Boolean literals: `True` and `False` in Python.
+      -- TSCharacter          { }, -- Character literals: `'a'` in C.
+      -- TSCharacterSpecial   { }, -- Special characters.
+      TSComment            { Comment }, -- Line comments and block comments.
+      -- TSConditional        { }, -- Keywords related to conditionals: `if`, `when`, `cond`, etc.
+      -- TSConstant           { }, -- Constants identifiers. These might not be semantically constant. E.g. uppercase variables in Python.
+      -- TSConstBuiltin       { }, -- Built-in constant values: `nil` in Lua.
+      -- TSConstMacro         { }, -- Constants defined by macros: `NULL` in C.
+      -- TSConstructor        { }, -- Constructor calls and definitions: `{}` in Lua, and Java constructors.
+      -- TSDebug              { }, -- Debugging statements.
+      -- TSDefine             { }, -- Preprocessor #define statements.
+      -- TSError              { }, -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
+      -- TSException          { }, -- Exception related keywords: `try`, `except`, `finally` in Python.
+      -- TSField              { }, -- Object and struct fields.
+      -- TSFloat              { }, -- Floating-point number literals.
+      TSFunction           { Function }, -- Function calls and definitions.
+      -- TSFuncBuiltin        { }, -- Built-in functions: `print` in Lua.
+      -- TSFuncMacro          { }, -- Macro defined functions (calls and definitions): each `macro_rules` in Rust.
+      -- TSInclude            { }, -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
+      TSKeyword            { Keyword }, -- Keywords that don't fit into other categories.
+      -- TSKeywordFunction    { }, -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
+      -- TSKeywordOperator    { }, -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
+      -- TSKeywordReturn      { }, -- Keywords like `return` and `yield`.
+      -- TSLabel              { }, -- GOTO labels: `label:` in C, and `::label::` in Lua.
+      -- TSMethod             { }, -- Method calls and definitions.
+      -- TSNamespace          { }, -- Identifiers referring to modules and namespaces.
+      -- TSNone               { }, -- No highlighting (sets all highlight arguments to `NONE`). this group is used to clear certain ranges, for example, string interpolations. Don't change the values of this highlight group.
+      -- TSNumber             { }, -- Numeric literals that don't fit into other categories.
+      -- TSOperator           { }, -- Binary or unary operators: `+`, and also `->` and `*` in C.
+      -- TSParameter          { }, -- Parameters of a function.
+      -- TSParameterReference { }, -- References to parameters of a function.
+      -- TSPreProc            { }, -- Preprocessor #if, #else, #endif, etc.
+      -- TSProperty           { }, -- Same as `TSField`.
+      -- TSPunctDelimiter     { }, -- Punctuation delimiters: Periods, commas, semicolons, etc.
+      -- TSPunctBracket       { }, -- Brackets, braces, parentheses, etc.
+      -- TSPunctSpecial       { }, -- Special punctuation that doesn't fit into the previous categories.
+      -- TSRepeat             { }, -- Keywords related to loops: `for`, `while`, etc.
+      -- TSStorageClass       { }, -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
+      -- TSString             { }, -- String literals.
+      -- TSStringRegex        { }, -- Regular expression literals.
+      -- TSStringEscape       { }, -- Escape characters within a string: `\n`, `\t`, etc.
+      -- TSStringSpecial      { }, -- Strings with special meaning that don't fit into the previous categories.
+      -- TSSymbol             { }, -- Identifiers referring to symbols or atoms.
+      -- TSTag                { }, -- Tags like HTML tag names.
+      -- TSTagAttribute       { }, -- HTML tag attributes.
+      -- TSTagDelimiter       { }, -- Tag delimiters like `<` `>` `/`.
+      -- TSText               { }, -- Non-structured text. Like text in a markup language.
+      -- TSStrong             { }, -- Text to be represented in bold.
+      -- TSEmphasis           { }, -- Text to be represented with emphasis.
+      -- TSUnderline          { }, -- Text to be represented with an underline.
+      -- TSStrike             { }, -- Strikethrough text.
+      -- TSTitle              { }, -- Text that is part of a title.
+      -- TSLiteral            { }, -- Literal or verbatim text.
+      -- TSURI                { }, -- URIs like hyperlinks or email addresses.
+      -- TSMath               { }, -- Math environments like LaTeX's `$ ... $`
+      -- TSTextReference      { }, -- Footnotes, text references, citations, etc.
+      -- TSEnvironment        { }, -- Text environments of markup languages.
+      -- TSEnvironmentName    { }, -- Text/string indicating the type of text environment. Like the name of a `\begin` block in LaTeX.
+      -- TSNote               { }, -- Text representation of an informational note.
+      -- TSWarning            { }, -- Text representation of a warning note.
+      -- TSDanger             { }, -- Text representation of a danger note.
+      -- TSType               { }, -- Type (and class) definitions and annotations.
+      -- TSTypeBuiltin        { }, -- Built-in types: `i32` in Rust.
+      -- TSVariable           { }, -- Variable names that don't fit into other categories.
+      -- TSVariableBuiltin    { }, -- Variable names defined by the language: `this` or `self` in Javascript.
       -- }}}
 
       -- Plugins {{{
